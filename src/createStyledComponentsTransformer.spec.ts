@@ -140,6 +140,22 @@ const testCases: TestCase[] = [
     `,
     output: `var Foo = styled.div.withConfig({ componentId: "${fileHash}", displayName: "Foo" }) \`p1:"\\\\n bar ";p2:\${"p2"};p3:\${"p3"} p4:""\`;`,
   },
+  {
+    name: 'css tags',
+    input: `css\`
+    foo: bar;
+    bar: foo;
+    \`;keyframes\`
+    foo: bar;
+    bar: foo;
+    \`;createGlobalStyle\`
+    foo: bar;
+    bar: foo;
+    \`;injectGlobal\`
+    foo: bar;
+    bar: foo; \`;other\` foo: bar; \``,
+    output: `css \`foo:bar;bar:foo;\`;\nkeyframes \`foo:bar;bar:foo;\`;\ncreateGlobalStyle \`foo:bar;bar:foo;\`;\ninjectGlobal \`foo:bar;bar:foo;\`;\nother \` foo: bar; \`;`,
+  },
 ];
 
 describe('createStyledComponentsTransformer', () => {
