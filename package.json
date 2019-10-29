@@ -1,0 +1,150 @@
+{
+  "name": "typescript-styled-components-plugin",
+  "version": "1.1.0",
+  "description": "A styled-components plugin to minify & set componentId & displayName for typescript",
+  "author": "acrazing <joking.young@gmail.com>",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "assets/",
+    "lib/",
+    "src/"
+  ],
+  "sideEffects": [
+    "*.css",
+    "*.less",
+    "*.scss"
+  ],
+  "scripts": {
+    "build": "run-s clean && run-p build:cjs build:esm && run-s build:esm:rename build:cjs:rename",
+    "build:cjs": "tsc --outDir cjs --module commonjs",
+    "build:cjs:rename": "run-p build:cjs:rename:js build:cjs:rename:map",
+    "build:cjs:rename:js": "find ./cjs -type f -name '*.js' | sed -E 's/^\\.\\/cjs\\/(.+)$/\\1/' | xargs -I % mv ./cjs/% ./lib/%",
+    "build:cjs:rename:map": "find ./cjs -type f -name '*.js.map' | sed -E 's/^\\.\\/cjs\\/(.+)$/\\1/' | xargs -I % mv ./cjs/% ./lib/%",
+    "build:esm": "tsc --outDir lib --module esnext --declaration",
+    "build:esm:rename": "run-p build:esm:rename:js build:esm:rename:map",
+    "build:esm:rename:js": "find ./lib -type f -name '*.js' | sed -E 's/^(.+)\\.js$/\\1/' | xargs -I % mv %.js %.mjs",
+    "build:esm:rename:map": "find ./lib -type f -name '*.js.map' | sed -E 's/^(.+)\\.js\\.map$/\\1/' | xargs -I % mv %.js.map %.mjs.map",
+    "clean": "rm -rf cjs esm lib build temp .cache",
+    "prepublishOnly": "run-s test build",
+    "start": "npm run clean && npm run build:esm -- --watch",
+    "test": "jest",
+    "compare:babel": "babel ./src/compare -x .ts,.tsx --out-dir ./compare/babel",
+    "compare:third": "ttsc -p tsconfig.third.json",
+    "compare:self": "ttsc -p tsconfig.self.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:acrazing/typescript-styled-components-plugin.git"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/jest": "^24.0.20",
+    "@types/node": "^12.11.7",
+    "@types/react": "^16.9.11",
+    "@types/styled-components": "4.1.8",
+    "babel-plugin-styled-components": "^1.10.6",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2",
+    "styled-components": "^4.4.0",
+    "ts-jest": "^24.1.0",
+    "ttypescript": "^1.5.7",
+    "typescript-plugin-styled-components": "^1.4.3"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.144",
+    "@types/murmurhash": "^0.0.1",
+    "lodash": "^4.17.15",
+    "murmurhash": "^0.0.2",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.4"
+  },
+  "cliVersion": "8.11.1",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,less,scss,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "endOfLine": "lf"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node",
+      "mjs"
+    ],
+    "cacheDirectory": ".cache/jest",
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.{ts,tsx}",
+      "!**/*.d.ts"
+    ],
+    "coverageDirectory": "temp/coverage",
+    "globals": {
+      "__DEV__": true,
+      "ENV": {}
+    },
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.{ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "chrome": "58",
+            "ie": "11"
+          }
+        }
+      ],
+      [
+        "@babel/preset-typescript",
+        {
+          "isTSX": true,
+          "allExtensions": true
+        }
+      ],
+      [
+        "@babel/preset-react"
+      ]
+    ],
+    "plugins": [
+      "babel-plugin-styled-components"
+    ]
+  }
+}
