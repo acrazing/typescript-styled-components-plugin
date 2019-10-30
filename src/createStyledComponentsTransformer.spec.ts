@@ -156,6 +156,43 @@ const testCases: TestCase[] = [
     bar: foo; \`;other\` foo: bar; \``,
     output: `css \`foo:bar;bar:foo;\`;\nkeyframes \`foo:bar;bar:foo;\`;\ncreateGlobalStyle \`foo:bar;bar:foo;\`;\ninjectGlobal \`foo:bar;bar:foo;\`;\nother \` foo: bar; \`;`,
   },
+  {
+    name: 'minify comments',
+    input: `css\`
+    // comment
+    // \${"span in comment"}
+    // this should be removed
+    title: "";
+    value: \${"value"};
+    second: "";
+    // second comment
+    // no span
+    third: \${"third"};
+    /* comment block
+    value: \${"block comment"};
+    */
+    forth: \${"forth"};
+    end: "end with space";
+    \``,
+    output: `css \`title:"";value:\${"value"};second:"";third:\${"third"};forth:\${"forth"};end:"end with space";\`;`,
+  },
+  {
+    name: 'minify as single span',
+    input: `css\`
+    // comment 1
+    // comment \${comment}
+    title: value;
+    // comment \${3}
+    title: value;
+    \`;css\`
+    // comment \${1}
+    title: value;
+    \`;css\`
+    title: value;
+    // comment: \${2}
+    \``,
+    output: `css \`title:value;title:value;\`;\ncss \`title:value;\`;\ncss \`title:value;\`;`,
+  },
 ];
 
 describe('createStyledComponentsTransformer', () => {

@@ -1,6 +1,6 @@
 {
   "name": "typescript-styled-components-plugin",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A styled-components plugin to minify & set componentId & displayName for typescript",
   "author": "acrazing <joking.young@gmail.com>",
   "main": "lib/index.js",
