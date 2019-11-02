@@ -2,6 +2,46 @@
 
 A styled-components plugin to minify & set componentId & displayName for typescript.
 
+This transformer helps you to transform the following code:
+
+```typescript jsx
+export const CastProps = [
+  styled.div<Props>`
+    display: block;
+    background: ${() => 'black'};
+    color: white;
+  `,
+  styled(Base)<Props>`
+    display: block;
+    background: ${() => 'black'};
+    color: white;
+  `,
+];
+```
+
+to the following format:
+
+```typescript jsx
+export const CastProps = [
+  styled.div.withConfig({
+    componentId: 'sc-2mrASk-6',
+    displayName: 'CastProps',
+  })`
+    display: block;
+    background: ${() => 'black'};
+    color: white;
+  `,
+  styled(Base).withConfig({
+    componentId: 'sc-2mrASk-7',
+    displayName: 'CastProps',
+  })`
+    display: block;
+    background: ${() => 'black'};
+    color: white;
+  `,
+];
+```
+
 ## Install
 
 ```bash

@@ -12,7 +12,11 @@
     "allowSyntheticDefaultImports": true,
     "plugins": [
       {
-        "transform": "./lib"
+        "transform": "typescript-plugin-styled-components",
+        "type": "config",
+        "ssr": true,
+        "displayName": true,
+        "minify": true
       }
     ]
   },
