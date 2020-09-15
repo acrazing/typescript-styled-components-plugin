@@ -4,7 +4,6 @@
  */
 import React from 'react';
 import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
-
 const Base = (props) => React.createElement('div', null, props.name);
 export const Styled = [
   styled.div`
@@ -80,7 +79,7 @@ export const CastAll = [
 ];
 export const TestBabelMinify = styled.div.withConfig({
   displayName: 'TestBabelMinify',
-  componentId: 'sc-7lw2b9',
+  componentId: 'sc-12zezc7',
 })`
   .p0 {
     content: 'first raw';
@@ -99,7 +98,7 @@ export const TestBabelMinify = styled.div.withConfig({
 `;
 export const TestBabelMinifyOnce = styled.div.withConfig({
   displayName: 'TestBabelMinifyOnce',
-  componentId: 'sc-1d3sax',
+  componentId: 'sc-1oepzb3',
 })`
   content: 'raw
 ';

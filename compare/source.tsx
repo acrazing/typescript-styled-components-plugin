@@ -10,6 +10,7 @@ import styled, {
   keyframes,
   StyledComponent,
   StyledFunction,
+  ThemedStyledFunction,
 } from 'styled-components';
 
 interface Props {
@@ -85,7 +86,7 @@ export const CastProps = [
 ];
 
 export const CastFactory = [
-  (styled.div as StyledFunction<ComponentClass<Props>>)`
+  (styled.div as ThemedStyledFunction<'div', Props>)`
     display: block;
     background: ${() => 'black'};
     color: white;

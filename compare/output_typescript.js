@@ -4,13 +4,9 @@
  */
 import React from 'react';
 import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
-
 const Base = (props) => React.createElement('div', null, props.name);
 export const Styled = [
-  styled.div.withConfig({
-    componentId: 'sc-2mrASk',
-    displayName: 'Styled',
-  })`
+  styled.div.withConfig({ componentId: 'sc-2mrASk', displayName: 'Styled' })`
     display: block;
     background: ${() => 'black'};
     color: white;
@@ -33,10 +29,12 @@ export const GlobalStyle = createGlobalStyle`div{display:block;background:${() =
   'black'};color:white;}`;
 export const Keyframe = keyframes`0%{display:block;background:${'black'};color:white;}`;
 export const WithAttrs = [
-  styled.div.attrs({ id: 'id' }).withConfig({
-    componentId: 'sc-2mrASk-2',
-    displayName: 'WithAttrs',
-  })`display:block;background:${() => 'black'};color:white;`,
+  styled.div
+    .attrs({ id: 'id' })
+    .withConfig({
+      componentId: 'sc-2mrASk-2',
+      displayName: 'WithAttrs',
+    })`display:block;background:${() => 'black'};color:white;`,
   styled(Base)
     .attrs({ id: 'id' })
     .withConfig({
