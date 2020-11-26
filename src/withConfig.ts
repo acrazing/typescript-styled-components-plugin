@@ -50,21 +50,32 @@ export function withConfig(state: State, node: ts.Node) {
     const displayName = getDisplayName(left);
     if (displayName) {
       properties.push(
-        ts.createPropertyAssignment(
+        ts.factory.createPropertyAssignment(
           'displayName',
-          ts.createStringLiteral(displayName),
+          ts.factory.createStringLiteral(displayName),
         ),
       );
     }
   }
-  const newLeft = ts.createCall(
-    ts.createPropertyAccess(left, ts.createIdentifier('withConfig')),
+  const newLeft = ts.factory.createCallExpression(
+    ts.factory.createPropertyAccessExpression(
+      left,
+      ts.factory.createIdentifier('withConfig'),
+    ),
     void 0,
-    [ts.createObjectLiteral(properties, false)],
+    [ts.factory.createObjectLiteralExpression(properties, false)],
   );
   return ts.isCallExpression(node)
-    ? ts.createCall(newLeft, node.typeArguments, node.arguments)
+    ? ts.factory.createCallExpression(
+        newLeft,
+        node.typeArguments,
+        node.arguments,
+      )
     : ts.isTaggedTemplateExpression(node)
-    ? ts.createTaggedTemplate(newLeft, node.typeArguments, node.template)
+    ? ts.factory.createTaggedTemplateExpression(
+        newLeft,
+        node.typeArguments,
+        node.template,
+      )
     : node;
 }

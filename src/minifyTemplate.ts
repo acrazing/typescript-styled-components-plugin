@@ -156,27 +156,35 @@ export function minifyTemplate(node: ts.TaggedTemplateExpression) {
   const [spans, indicates] = minifyCookedValues(cookedValues);
   let newTemplate: ts.TemplateLiteral;
   if (ts.isNoSubstitutionTemplateLiteral(template)) {
-    newTemplate = ts.createNoSubstitutionTemplateLiteral(spans[0] || '');
+    newTemplate = ts.factory.createNoSubstitutionTemplateLiteral(
+      spans[0] || '',
+    );
   } else {
     const templateSpans = template.templateSpans.slice();
     indicates.forEach((expressionIndex, iteration) => {
       templateSpans.splice(expressionIndex - iteration, 1);
     });
     if (templateSpans.length === 0) {
-      newTemplate = ts.createNoSubstitutionTemplateLiteral(spans[0] || '');
+      newTemplate = ts.factory.createNoSubstitutionTemplateLiteral(
+        spans[0] || '',
+      );
     } else {
-      newTemplate = ts.createTemplateExpression(
-        ts.createTemplateHead(spans[0]),
+      newTemplate = ts.factory.createTemplateExpression(
+        ts.factory.createTemplateHead(spans[0]),
         templateSpans.map((span, index) => {
-          return ts.createTemplateSpan(
+          return ts.factory.createTemplateSpan(
             span.expression,
             index === spans.length - 2
-              ? ts.createTemplateTail(spans[index + 1])
-              : ts.createTemplateMiddle(spans[index + 1]),
+              ? ts.factory.createTemplateTail(spans[index + 1])
+              : ts.factory.createTemplateMiddle(spans[index + 1]),
           );
         }),
       );
     }
   }
-  return ts.createTaggedTemplate(node.tag, node.typeArguments, newTemplate);
+  return ts.factory.createTaggedTemplateExpression(
+    node.tag,
+    node.typeArguments,
+    newTemplate,
+  );
 }
